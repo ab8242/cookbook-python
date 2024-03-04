@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/script.js') }}"
+      defer
+    ></script>
+    <title>Car Dealz</title>
+  </head>
+  {% with messages = get_flashed_messages() %}<!-- declare a variable called messages -->
+  {% if messages %}<!-- check if there are any messages -->
+  {% for message in messages %}<!-- loop through the messages -->
+  <p>{{message}}</p>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <body>
+    <form action="/new" method="post">
+      <input type="hidden" name="user_id" value="{{ session.user_id }}" />
+      <div>
+        <h1>Put Car Up For Sale</h1>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+      </div>
+      <div>
+        <div><label>Price:</label></div>
+        <input type="number" name="price" />
+      </div>
+      <div>
+        <div><label>Model:</label></div>
+        <input type="text" name="model" />
+      </div>
+      <div>
+        <div><label>Make:</label></div>
+        <input type="text" name="make" />
+      </div>
+      <div>
+        <div><label>Year:</label></div>
+        <input type="number" name="year" />
+      </div>
+      <div>
+        <div><label>Description:</label></div>
+        <textarea name="description" cols="40" rows="7"></textarea>
+      </div>
+      <button type="submit">Add</button>
+    </form>
+  </body>
+</html>
+
+<!-- Format for adding images -->
+<!-- <img src="{{ url_for('static', filename='images/img.png') }}"> -->

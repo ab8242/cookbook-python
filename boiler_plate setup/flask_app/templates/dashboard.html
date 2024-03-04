@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/script.js') }}"
+      defer
+    ></script>
+    <title>Car Dealz</title>
+  </head>
+  <body>
+    <div>
+      <input type="hidden" name="user_id" value="{{ session.user_id }}" />
+      <h1>Welcome to Car Dealz, {{ session.user_name }}!!!!!</h1>
+      <a href="/logout">Logout</a>
+      <div>
+        <h2>Cars for Sale</h2>
+      </div>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <td>Model</td>
+            <td>Year</td>
+            <td>Posted By</td>
+            <td>Actions</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for one_car in all_cars %}
+          <tr>
+            <td>{{ one_car.model }}</td>
+            <td>{{ one_car.year }}</td>
+            <td>
+              {{ one_car.lister.first_name }} {{ one_car.lister.last_name }}
+            </td>
+            <td>
+              {% if one_car.lister.id == session['user_id'] %}
+              <a href="/edit/{{ one_car.id }}">edit</a>
+              <a href="/purchase/car/{{ one_car.id }}">delete</a>
+              {% else %}
+              <a href="/show/{{ one_car.id }}">view</a>
+              {% endif%}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="/new">Add a Car</a>
+    </div>
+  </body>
+</html>
+
+<!-- Format for adding images -->
+<!-- <img src="{{ url_for('static', filename='images/img.png') }}"> -->

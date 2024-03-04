@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <title>Car Dealz</title>
+</head>
+<body>
+    <input type="hidden" name="id" value="one_car.id">
+    <div>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <h2>{{ one_car.price }}</h2>
+    <div>
+        <label>Model: {{ one_car.model }}</label>
+    </div>
+    <div>
+        <label>Make: {{ one_car.make }}</label>
+    </div>
+    <div>
+        <label>Year: {{ one_car.year }}</label>
+    </div>
+    <div>
+        <label>Description:</label>
+        <p>{{ one_car.description }}</p>
+    </div>
+        <label>Seller: {{ one_car.lister.first_name }} {{ one_car.lister.last_name }}</label>    
+    </div>
+    <a href="/purchase/car/{{ one_car.id }}">Purchase</a>
+    
+</body>
+</html>
+
+<!-- Format for adding images -->
+<!-- <img src="{{ url_for('static', filename='images/img.png') }}"> -->

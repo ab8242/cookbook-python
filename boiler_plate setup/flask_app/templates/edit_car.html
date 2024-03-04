@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/script.js') }}"
+      defer
+    ></script>
+    <title>Car Dealz</title>
+  </head>
+  <body>
+    <form action="/edit/{{ one_car.id }}" method="post">
+      <input type="hidden" name="user_id" value="{{ session.user_id }}" />
+      <input type="hidden" name="id" value="{{ one_car.id }}" />
+      <div>
+        <h1>Edit {{one_car.model }}</h1>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+      </div>
+      <div>
+        <div><label>Price:</label></div>
+        <input type="number" name="price" value="{{ one_car.price }}" />
+      </div>
+      <div>
+        <div><label>Model:</label></div>
+        <input type="text" name="model" value="{{ one_car.model }}" />
+      </div>
+      <div>
+        <div><label>Make:</label></div>
+        <input type="text" name="make" value="{{ one_car.make }}" />
+      </div>
+      <div>
+        <div><label>Year:</label></div>
+        <input type="number" name="year" value="{{ one_car.year }}" />
+      </div>
+      <div>
+        <div><label>Description:</label></div>
+        <textarea name="description" cols="40" rows="7">
+        {{ one_car.description }}</textarea
+        >
+      </div>
+      <button type="submit">Update</button>
+    </form>
+  </body>
+</html>
+
+<!-- Format for adding images -->
+<!-- <img src="{{ url_for('static', filename='images/img.png') }}"> -->
