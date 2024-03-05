@@ -26,23 +26,24 @@ class Recipe:
         self.updated_at = data['updated_at']
         self.user_id = data['user_id']
         self.lister = None
+        self.ingredients = []
 
         # What changes need to be made above for this project?
         # What needs to be added here for class association?
 
-    # Create Users Titles
+    # Create Recipe
     @classmethod
     def add_recipe_to_database(cls, recipe_data):
         if not cls.validate_recipe_info(recipe_data):
             return False
         query = """
-                INSERT INTO recipes (title, total_time, prep_time, cook_time, user_id, serving_size)
-                VALUES (%(title)s, %(total_time)s, %(prep_time)s, %(cook_time)s, %(user_id)s, %(serving_size)s)
+                INSERT INTO recipes ( title, total_time, prep_time, cook_time, serving_size, directions, user_id )
+                VALUES ( %(title)s, %(total_time)s, %(prep_time)s, %(cook_time)s, %(serving_size)s, %(directions)s, %(user_id)s )
                 ;"""
         new_recipe = connectToMySQL(cls.db).query_db(query, recipe_data)
         return new_recipe
-    # Read Users Titles
 
+    # View All Recipes on Dashboard
     @classmethod
     def view_all_recipes_with_authors(cls):
         query = """
@@ -61,8 +62,8 @@ class Recipe:
                 'user_name': result['user_name'],
                 'email': result['email'],
                 'password': result['password'],
-                'created_at': result['users.created_at'],
-                'updated_at': result['users.updated_at']
+                'created_at': result['created_at'],
+                'updated_at': result['updated_at']
             })
             recipes_authors.append(one_recipe)
         return recipes_authors
@@ -114,6 +115,7 @@ class Recipe:
                 cook_time=%(cook_time)s,
                 user_id=%(user_id)s,
                 serving_size=%(serving_size)s
+                directions=%(directions)s
                 WHERE id = %(id)s
                 ;"""
         updated_recipe = connectToMySQL(cls.db).query_db(query, recipe_data)
@@ -135,23 +137,28 @@ class Recipe:
         if len(data['title']) < 2:
             flash('Recipe title must be longer than 2 characters!!  Please try again!')
             is_valid = False
-        if len(data['total_time']) < 2:
+        if int(data['total_time']) == 0:
             flash(
-                'Recipe Total_time must be longer than 2 characters!!  Please try again!')
+                'Recipe total time must be longer than 2 characters!!  Please try again!')
             is_valid = False
-        if len(data['prep_time']) == 0:
+        if int(data['prep_time']) == 0:
             flash(
-                'Prep_time can not be left blank!  Please put in the correct prep_time!!')
+                ' Recipe prep time can not be 0!  Please put in the correct prep time!!')
             is_valid = False
-        if len(data['cook_time']) == 0:
-            flash('Recipe cook_time cannot be left blank!!  Please add a cook_time!')
-            is_valid = False
-        elif len(data['cook_time']) < 3:
+        if int(data['cook_time']) == 0:
             flash(
-                'Recipe cook_time must be greater than 3 characters!!  Please try again!')
+                'Recipe cook time cannot be 0!!  Please add a cook time!')
             is_valid = False
-        if len(data['serving_size']) == 0:
+        if int(data['serving_size']) == 0:
             flash(
-                'Recipe serving_size cannot be left blank!!  Please add the serving_size you want to sell your recipe for!')
+                'Recipe serving size cannot be 0!!  Please add the serving size of your recipe!')
+            is_valid = False
+        if len(data['directions']) == 0:
+            flash(
+                'Directions cannot be left blank.  Please add the directions to the form.'
+            )
+        elif len(data['directions']) < 15:
+            flash(
+                'Need more directions.  We all do not know what we are doing!')
             is_valid = False
         return is_valid

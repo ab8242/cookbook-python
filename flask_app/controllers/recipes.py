@@ -5,53 +5,46 @@ from flask_app.models import recipe
 # As you add model files add them the the import above
 # This file is the second stop in Flask's thought process, here it looks for a route that matches the request
 
-# Create Users Controller
+# Create Recipe Controller
 
 
 @app.route('/new', methods=['POST', 'GET'])
-def create_new_car_for_sale():
+def create_new_recipe():
     if 'user_id' not in session:
         return redirect('/')
     if request.method == 'GET':
-        return render_template('add_new_car.html')
-    if car.Car.put_car_up_for_sale(request.form):
-        return redirect('/dashboard')
+        return render_template('add_new_recipe.html')
+    if recipe.Recipe.add_recipe_to_database(request.form):
+        return redirect('/addIngredients')
     return redirect('/new')
 
 # Read Users Controller
 
 
 @app.route('/show/<int:id>')
-def show_car_by_id(id):
+def show_recipe_by_id(id):
     if 'user_id' not in session:
         return redirect('/')
-    one_car = car.Car.view_car_by_id_with_seller(id)
-    return render_template('show_car.html', one_car=one_car)
+    one_recipe = recipe.Recipe.view_all_recipes_with_authors(id)
+    return render_template('show_car.html', one_recipe=one_recipe)
 
 # Update Users Controller
 
 
 @app.route('/edit/<int:id>', methods=['POST', 'GET'])
-def edit_car_by_seller(id):
+def edit_recipe_by_author(id):
     if 'user_id' not in session:
         return redirect('/')
     if request.method == 'GET':
-        one_car = car.Car.view_car_by_id(id)
-        return render_template('edit_car.html', one_car=one_car)
+        one_recipe = recipe.Recipe.view_recipe_by_id(id)
+        return render_template('edit_recipe.html', one_recipe=one_recipe)
     if request.method == 'POST':
-        car.Car.edit_car_by_seller(request.form)
+        recipe.Recipe.edit_recipe_by_author(request.form)
         return redirect('/dashboard')
-    return redirect(f"/edit/car/{request.form['id']}")
+    return redirect(f"/edit/recipe/{request.form['id']}")
 
 # Delete Users Controller
 
-
-@app.route('/purchase/car/<int:id>')
-def purchase_car_by_id(id):
-    if 'user_id' not in session:
-        return redirect('/')
-    car.Car.purchased_car_by_id(id)
-    return redirect('/dashboard')
 
 # Notes:
 # 1 - Use meaningful names

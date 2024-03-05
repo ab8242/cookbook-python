@@ -18,8 +18,8 @@ def register_user():
 def dashboard_page():
     if 'user_id' not in session:
         return redirect('/')
-    all_cars = car.Car.view_all_cars_with_sellers()
-    return render_template('dashboard.html', all_cars=all_cars)
+    all_recipes = recipe.Recipe.view_all_recipes_with_authors()
+    return render_template('dashboard.html', all_recipes=all_recipes)
 
 
 @app.route('/')

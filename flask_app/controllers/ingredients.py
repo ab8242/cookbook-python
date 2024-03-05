@@ -1,12 +1,18 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-# import entire file, rather than class, to avoid circular imports
-from flask_app.models import ingredient
-# As you add model files add them the the import above
-# This file is the second stop in Flask's thought process, here it looks for a route that matches the request
 
-# Create Users Controller
+from flask_app.models import user, recipe, ingredient
 
+
+@app.route('/addIngredients', methods=['POST', 'GET'])
+def add_ingredients_to_recipe():
+    if 'user_id' not in session:
+        return redirect('/')
+    if request.method == 'GET':
+        return render_template('add_ingredients.html')
+    if ingredient.Ingredients.add_ingredients_to_database(request.form):
+        return redirect('/dashboard')
+    return redirect('/new')
 
 # Notes:
 # 1 - Use meaningful names

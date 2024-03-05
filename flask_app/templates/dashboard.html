@@ -14,48 +14,39 @@
       src="{{ url_for('static', filename='js/script.js') }}"
       defer
     ></script>
-    <title>Car Dealz</title>
+    <title>Your Recipes</title>
   </head>
   <body>
     <div>
       <input type="hidden" name="user_id" value="{{ session.user_id }}" />
-      <h1>Welcome to Car Dealz, {{ session.user_name }}!!!!!</h1>
+      <h1>Welcome to Recipes 'R' Us, {{ session.user_login }}!!!!!</h1>
       <a href="/logout">Logout</a>
       <div>
-        <h2>Cars for Sale</h2>
+        <h2>All Posted Recipes Library</h2>
       </div>
     </div>
     <div>
       <table>
         <thead>
           <tr>
-            <td>Model</td>
-            <td>Year</td>
-            <td>Posted By</td>
-            <td>Actions</td>
+            <td>Title</td>
+            <td>Total Time</td>
+            <td>Level</td>
+            <td>Author</td>
           </tr>
         </thead>
         <tbody>
-          {% for one_car in all_cars %}
+          {% for one_recipe in all_recipes %}
           <tr>
-            <td>{{ one_car.model }}</td>
-            <td>{{ one_car.year }}</td>
-            <td>
-              {{ one_car.lister.first_name }} {{ one_car.lister.last_name }}
-            </td>
-            <td>
-              {% if one_car.lister.id == session['user_id'] %}
-              <a href="/edit/{{ one_car.id }}">edit</a>
-              <a href="/purchase/car/{{ one_car.id }}">delete</a>
-              {% else %}
-              <a href="/show/{{ one_car.id }}">view</a>
-              {% endif%}
-            </td>
+            <td>{{ one_recipe.title }}</td>
+            <td>{{ one_recipe.total_time }}</td>
+            <td>{{ one_recipe.level }}</td>
+            <td>{{ one_recipe.lister.user_name }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-      <a href="/new">Add a Car</a>
+      <a href="/new">Add a Recipe</a>
     </div>
   </body>
 </html>

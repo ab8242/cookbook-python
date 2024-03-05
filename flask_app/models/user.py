@@ -11,7 +11,7 @@ bcrypt = Bcrypt(app)
 
 
 class User:
-    db = "belt_exam"  # which database are you using for this project
+    db = "cookbook_schema"  # which database are you using for this project
 
     def __init__(self, data):
         self.id = data['id']
@@ -39,7 +39,7 @@ class User:
                 ;"""
         registered_user = connectToMySQL(cls.db).query_db(query, user_data)
         session['user_id'] = registered_user
-        session['user_name'] = f"{user_data['first_name']}"
+        session['user_login'] = f"{user_data['first_name']}"
         return registered_user
 
     @classmethod
@@ -48,7 +48,7 @@ class User:
         if this_user:
             if bcrypt.check_password_hash(this_user.password, data['password']):
                 session['user_id'] = this_user.id
-                session['user_name'] = f"{this_user.first_name}"
+                session['user_login'] = f"{this_user.first_name}"
                 return True
         flash('Your login information was incorrect!  Please try again!')
         return False

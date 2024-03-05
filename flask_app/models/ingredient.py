@@ -2,7 +2,7 @@
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
-from flask_app.models import user
+from flask_app.models import recipe
 # import re
 # from flask_bcrypt import Bcrypt
 # bcrypt = Bcrypt(app)
@@ -12,7 +12,7 @@ from flask_app.models import user
 
 
 class Ingredients:
-    db = "belt_exam"  # which database are you using for this project
+    db = "cookbook_schema"  # which database are you using for this project
 
     def __init__(self, data):
         self.id = data['id']
@@ -20,7 +20,7 @@ class Ingredients:
         self.measurement = data['measurement']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.recipe_id = data['recipe_id']
+        self.in_recipe = []
         self.lister = None
 
         # What changes need to be made above for this project?
@@ -28,15 +28,16 @@ class Ingredients:
 
     # Create Users Names
     @classmethod
-    def put_car_up_for_sale(cls, car_data):
-        if not cls.validate_car_info(car_data):
+    def add_ingredients(cls, ingredient_data):
+        if not cls.validate_ingredient_info(ingredient_data):
             return False
         query = """
-                INSERT INTO cars (name, measurement, year, description, user_id, price)
-                VALUES (%(name)s, %(measurement)s, %(year)s, %(description)s, %(user_id)s, %(price)s)
+                INSERT INTO ingredients (name, measurement)
+                VALUES (%(name)s, %(measurement)s)
                 ;"""
-        new_car = connectToMySQL(cls.db).query_db(query, car_data)
-        return new_car
+        new_ingredient = connectToMySQL(
+            cls.db).query_db(query, ingredient_data)
+        return new_ingredient
     # Read Users Names
 
     @classmethod
@@ -124,26 +125,13 @@ class Ingredients:
         connectToMySQL(cls.db).query_db(query, data)
 
     @staticmethod
-    def validate_car_info(data):
+    def validate_ingredient_info(data):
         is_valid = True
         if len(data['name']) < 2:
-            flash('Car name must be longer than 2 characters!!  Please try again!')
+            flash(
+                'Ingredients name must be longer than 2 characters!!  Please try again!')
             is_valid = False
         if len(data['measurement']) < 2:
-            flash('Car Measurement must be longer than 2 characters!!  Please try again!')
-            is_valid = False
-        if len(data['year']) == 0:
-            flash('Year can not be left blank!  Please put in the correct year!!')
-            is_valid = False
-        if len(data['description']) == 0:
-            flash('Car description cannot be left blank!!  Please add a description!')
-            is_valid = False
-        elif len(data['description']) < 3:
-            flash(
-                'Car description must be greater than 3 characters!!  Please try again!')
-            is_valid = False
-        if len(data['price']) == 0:
-            flash(
-                'Car price cannot be left blank!!  Please add the price you want to sell your car for!')
+            flash('Measurement must be longer than 2 characters!!  Please try again!')
             is_valid = False
         return is_valid

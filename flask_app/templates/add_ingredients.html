@@ -14,45 +14,34 @@
       src="{{ url_for('static', filename='js/script.js') }}"
       defer
     ></script>
-    <title>Add Recipe</title>
+    
+
+    <title>Ingredient Dashboard</title>
   </head>
   {% with messages = get_flashed_messages() %}<!-- declare a variable called messages -->
   {% if messages %}<!-- check if there are any messages -->
   {% for message in messages %}<!-- loop through the messages -->
   <p>{{message}}</p>
   {% endfor %} {% endif %} {% endwith %}
-
+  
   <body>
     <form action="/new" method="post">
       <input type="hidden" name="user_id" value="{{ session.user_id }}" />
-        <h1>Add Recipe to Library</h1>
+        <h1>Add Ingredients to Recipe</h1>
         <a href="/dashboard">Dashboard</a>
         <a href="/logout">Logout</a>
-      <p>
-        <label>Title: </label>
-        <input type="text" name="title" />
-      </p>
-      <p>
-        <label>Total Time: </label>
-        <input type="number" name="total_time" min="1"/>
-      </p>
-      <p>
-        <label>Prep Time: </label>
-        <input type="number" name="prep_time" min="1"/>
-      </p>
-      <p>
-        <label>Cook Time :</label>
-        <input type="number" name="cook_time" min="1"/>
-      </p>
-      <p>
-        <label>Serving Size</label>
-        <input type="number" name="serving_size" min="1"/>
-      </p>
-      <p>
-        <label>Directions: </label><br/>
-        <textarea name="directions" cols="40" rows="7"></textarea>
-      </p>
-      <button type="submit">Next</button>
+      <div>
+        <p>
+          <label>Ingredient Measurement: </label>
+          <input type="text" name="measurement[]" value=""/>
+        </p>
+        <p>
+          <label>Ingredient Name: </label>
+          <input type="text" name="name[]" value=""/>
+        </p>
+        <a href="javasript:void(0);" title="add input">add input</a>
+    </div>
+      <button type="submit">Add</button>
     </form>
   </body>
 </html>
